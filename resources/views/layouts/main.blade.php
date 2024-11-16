@@ -56,6 +56,15 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="/post" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Posts
+                <span class="right badge badge-secondary">Crud</span>
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
     </div>
