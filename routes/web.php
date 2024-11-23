@@ -3,6 +3,7 @@
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/' , [BlogController::class , 'blogView']);
@@ -26,3 +27,5 @@ Route::get('/post_create' , [PostController::class , 'create'])->name('post.crea
 Route::post('/post_cr' , [PostController::class , 'store'])->name('post.store');
 Route::get('/post_edit/{id}' , [PostController::class , 'edit'])->name('post.edit');
 Route::put('/post_update/{id}' , [PostController::class, 'update'])->name('post.update');
+
+Route::resource('users', UserController::class);

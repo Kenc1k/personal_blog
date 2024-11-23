@@ -59,7 +59,6 @@
         <nav class="breadcrumbs">
           <ol>
             <li><a href="category">Home</a></li>
-            <li><a href="blog_details">Details</a></li>
             <li class="current">Blog</li>
           </ol>
         </nav>
