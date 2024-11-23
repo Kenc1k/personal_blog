@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorePostRequest;
-use App\Http\Requests\UpdatePostRequest;
+
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -44,15 +43,15 @@ class PostController extends Controller
     
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->move(public_path('dist/img'), $imageName); 
-            $data['image'] = 'dist/img/' . $imageName; 
+            $imagePath = $image->store('posts', 'public'); // Saves in storage/app/public/posts
+            $data['image'] = $imagePath; // Store the relative path
         }
     
         Post::create($data);
     
         return redirect('/post');
     }
+    
     
 
     /**
@@ -68,9 +67,9 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::findOrFail($id); // Fetch the post to edit
-        $categories = Category::all(); // Fetch all categories for the dropdown
-        return view('posts.edit', compact('post', 'categories')); // Pass both to the view
+        $post = Post::findOrFail($id); 
+        $categories = Category::all();
+        return view('posts.edit', compact('post', 'categories'));
     }
     
 
@@ -116,4 +115,5 @@ class PostController extends Controller
 
         return redirect('/post');
     }
+    
 }

@@ -7,7 +7,7 @@
 
                 <h1 align="center" class="mb-5">Posts list</h1>
 
-                <a href="{{ route('post.create') }}" class="btn btn-primary mb-4">Create category</a>
+                <a href="{{ route('post.create') }}" class="btn btn-primary mb-4">Create post</a>
                 <table class="table table-dark">
                     <thead>
                       <tr>
@@ -31,11 +31,12 @@
                                 <td>{{$post->text}}</td>
                                 <td>
                                     @if ($post->image)
-                                        <img src="{{ asset($post->image) }}" alt="Post Image" width="100">
+                                        <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" width="100">
                                     @else
                                         No Image
                                     @endif
                                 </td>
+                                
                                 
                                 <td><a href="{{ route('post.destroy', $post->id) }}" class="btn btn-danger"
                                     onclick="event.preventDefault(); document.getElementById('delete-form-{{ $post->id }}').submit();">Delete</a>
