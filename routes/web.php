@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
@@ -8,7 +9,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/' , [BlogController::class , 'blogView']);
 Route::get('/blog_details' , [BlogController::class, 'blog_details']);
+Route::post('/logout' , [BlogController::class, 'logout'])->name('logout');
 Route::get('/blog/{id}', [BlogController::class, 'show'])->name('blog.details');
+
 
 // Route::get('/blog', [PostController::class, 'index'])->name('blog.index');
 Route::get('/category' , [CategoryController::class, 'index']);
@@ -27,5 +30,17 @@ Route::get('/post_create' , [PostController::class , 'create'])->name('post.crea
 Route::post('/post_cr' , [PostController::class , 'store'])->name('post.store');
 Route::get('/post_edit/{id}' , [PostController::class , 'edit'])->name('post.edit');
 Route::put('/post_update/{id}' , [PostController::class, 'update'])->name('post.update');
+Route::get('/post/{id}', [BlogController::class, 'showPost'])->name('post.show');
+Route::post('/post/{postId}/comment', [BlogController::class, 'storeComment'])->name('comment.store');
+Route::get('/post/{post}', [PostController::class, 'showView'])->name('post.show');
+Route::post('/post/{post}/like', [PostController::class, 'toggleLike'])->name('post.like');
+
+
+
 
 Route::resource('users', UserController::class);
+
+Route::get('/loginPage' , [AuthController::class , 'loginPage'])->name('loginPage');
+Route::post('/login' , [AuthController::class , 'login'])->name('login');
+Route::get('/registerPage' , [AuthController::class, 'registerPage'])->name('registerPage');
+Route::post('/register' , [AuthController::class, 'register'])->name('register');

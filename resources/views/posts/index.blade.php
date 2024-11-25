@@ -17,6 +17,7 @@
                         <th scope="col">Description</th>
                         <th scope="col">Text</th>
                         <th scope="col">Image</th>
+                        <th scope="col">Views</th>
                         <th scope="col">Delete</th>
                         <th scope="col">Update</th>
                       </tr>
@@ -31,11 +32,12 @@
                                 <td>{{$post->text}}</td>
                                 <td>
                                     @if ($post->image)
-                                        <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" width="100">
+                                    <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" width="100">
                                     @else
-                                        No Image
+                                    No Image
                                     @endif
                                 </td>
+                                <td>{{$post->views}}</td>
                                 
                                 
                                 <td><a href="{{ route('post.destroy', $post->id) }}" class="btn btn-danger"

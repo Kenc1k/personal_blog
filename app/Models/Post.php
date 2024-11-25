@@ -16,10 +16,34 @@ class Post extends Model
         'description',
         'text',
         'image',
+        'views',
     ];
 
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+    public function views()
+    {
+        return $this->hasMany(Views::class);
+    }
+    public function likes()
+    {
+        return $this->hasMany(Likes::class);
+    }
+
+    public function likeCount()
+    {
+        return $this->likes()->where('is_like', true)->count();
+    }
+
+    public function dislikeCount()
+    {
+        return $this->likes()->where('is_like', false)->count();
+    }
+    
 }

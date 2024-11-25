@@ -8,19 +8,63 @@
   <meta name="description" content="">
   <meta name="keywords" content="">
 
-<link href="{{ asset('assets/img/favicon.png') }}" rel="icon">
-<link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
-<link href="https://fonts.googleapis.com" rel="preconnect">
-<link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-<link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/animate.css/animate.min.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/img/luffy.jpeg') }}" rel="icon">
+  <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/animate.css/animate.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
+  <style>
+    .user-name a {
+        font-size: 16px;
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 5px 10px;
+        /* border: 1px solid #6c7bff; */
+        border-radius: 20%;
+        transition: background-color 0.3s, color 0.3s;
+    }
 
+    .user-name a:hover {
+        background-color: #6c7bff;
+        color: white;
+        border-radius: 20px;
+    }
+    /* Container styling */
+  .logout-container {
+      display: flex;
+      justify-content: center; /* Center the button horizontally */
+      align-items: center; /* Center the button vertically */
+      margin-top: 3px;
+      margin-left: 7px;
+  }
+
+  /* Button styling */
+  .btn-logout {
+      background-color: #2E1B2F; 
+      color: white; /* White text */
+      border: none;
+      padding: 10px 20px; /* Padding for better size */
+      font-size: 16px; /* Adjust font size */
+      border-radius: 25px; /* Rounded corners */
+      cursor: pointer; /* Show pointer cursor on hover */
+      transition: background-color 0.3s; /* Smooth transition for hover effect */
+  }
+
+  /* Hover effect */
+  .btn-logout:hover {
+      background-color: #482b49; /* Darker red when hovered */
+  
+  }
+
+  </style>
 
 </head>
 
@@ -35,11 +79,34 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
+          <li>
+            @auth
+              <div class="user-name">
+                <a href="#">{{ Auth::user()->name }}</a>
+              </div>
+            @else
+                <!-- Display login link if not logged in -->
+                <a href="{{ route('loginPage') }}">Login</a>
+            @endauth
+        </li>
+        @auth
+        @if(auth()->user()->role === 'admin')
+            <li><a href="/category">Admin</a></li>
+        @endif
+      @endauth
           @foreach($categories as $category)
             <li>
               <a href="#">{{$category->name}}</a>
             </li>
           @endforeach
+          <div class="logout-container">
+            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                @csrf
+                <button type="submit" class="btn-logout">Logout</button>
+            </form>
+        </div>
+        
+        
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -55,13 +122,13 @@
     <div class="page-title dark-background">
       <div class="container position-relative">
         <h1>Blog</h1>
-        <p>This is my brend new portfolie blog website hope this will be usefull for you </p>
-        <nav class="breadcrumbs">
+        <p>This is my brend new portfolio blog website hope this will be usefull for you </p>
+        {{-- <nav class="breadcrumbs">
           <ol>
             <li><a href="category">Home</a></li>
             <li class="current">Blog</li>
           </ol>
-        </nav>
+        </nav> --}}
       </div>
     </div><!-- End Page Title -->
 
@@ -102,26 +169,14 @@
     </section>
     
 
-    <!-- Blog Pagination Section -->
     <section id="blog-pagination" class="blog-pagination section">
-
       <div class="container">
-        <div class="d-flex justify-content-center">
-          <ul>
-            <li><a href="#"><i class="bi bi-chevron-left"></i></a></li>
-            <li><a href="#">1</a></li>
-            <li><a href="#" class="active">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li>...</li>
-            <li><a href="#">10</a></li>
-            <li><a href="#"><i class="bi bi-chevron-right"></i></a></li>
-          </ul>
-        </div>
+          <div class="d-flex justify-content-center">
+              {{ $posts->links('pagination::bootstrap-5') }}
+          </div>
       </div>
-
-    </section><!-- /Blog Pagination Section -->
-
+  </section>
+  
   </main>
 
   <footer id="footer" class="footer dark-background">

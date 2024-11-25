@@ -14,6 +14,7 @@
                         <th scope="col">ID</th>
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Role</th>
                         <th scope="col">Delete</th>
                         <th scope="col">Update</th>
                       </tr>
@@ -24,6 +25,7 @@
                                 <td>{{$user->id}}</td>
                                 <td>{{$user->name}}</td>
                                 <td>{{$user->email}}</td>
+                                <td>{{$user->role}}</td>
                                 <!-- Delete link with form submission -->
                                 <td>
                                     <form action="{{ route('users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">

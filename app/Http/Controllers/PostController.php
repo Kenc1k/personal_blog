@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Views;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class PostController extends Controller
 {
@@ -115,5 +117,59 @@ class PostController extends Controller
 
         return redirect('/post');
     }
+    public function showView(Post $post)
+    {
+        $ip = FacadesRequest::ip(); // Get the IP address of the visitor
+
+        // Check if the IP address has already viewed the post
+        $hasViewed = Views::where('post_id', $post->id)->where('ip_address', $ip)->exists();
+
+        if (!$hasViewed) {
+            // Increment the post's views count
+            $post->increment('views');
+
+            // Log the view in the database
+            Views::create([
+                'post_id' => $post->id,
+                'ip_address' => $ip,
+            ]);
+        }
+
+        return view('post.show', compact('post'));
+    }
+    public function toggleLike(Request $request, Post $post)
+    {
+        // Ensure user is logged in
+        $user = auth()->user();
+    
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'You need to log in to like or dislike a post.');
+        }
+    
+        // Validate the input
+        $request->validate([
+            'is_like' => 'required|boolean',
+        ]);
+    
+        // Find existing like/dislike
+        $existingLike = $post->likes()->where('user_id', $user->id)->first();
+    
+        if ($existingLike) {
+            if ($existingLike->is_like == $request->is_like) {
+                $existingLike->delete(); // Unlike/undislike
+            } else {
+                $existingLike->update(['is_like' => $request->is_like]);
+            }
+        } else {
+            $post->likes()->create([
+                'user_id' => $user->id,
+                'is_like' => $request->is_like,
+            ]);
+        }
+    
+        return back()->with('success', 'Your action has been recorded.');
+    }
+    
+
     
 }
